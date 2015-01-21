@@ -8,3 +8,11 @@ Commenced: 21/01/2015
 Finished:
 
 --------------------------------------------------------------------------------
+
+	v0.1 - 21/01/2015
+
+		To begin with, the implementation of extracting a page number and offset
+		from a given logical address is to be added. The creation of the class
+		'LogicalAddress' was implemented to achieve this. In addition, the JUnit
+		testing class 'LogicalAddressTest' was also created to ensure that the
+		method of extracting page number and offset was correct.
