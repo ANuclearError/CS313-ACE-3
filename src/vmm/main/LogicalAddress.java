@@ -73,4 +73,10 @@ public class LogicalAddress {
 	public int getOffset(){
 		return offset;
 	}
+	
+	public static void main(String[] args){
+		LogicalAddress la = new LogicalAddress(16916);
+		System.out.println(la.getPageNumber());
+		System.out.println(la.getOffset());
+	}
 }
