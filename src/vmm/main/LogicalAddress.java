@@ -8,7 +8,7 @@ package vmm.main;
  * independent and may be infused with another class if need be.
  * 
  * @author Aidan O'Grady
- * @version 0.1
+ * @version 0.2
  * @since 0.1
  *
  */
@@ -75,8 +75,9 @@ public class LogicalAddress {
 	}
 	
 	public static void main(String[] args){
-		LogicalAddress la = new LogicalAddress(16916);
-		System.out.println(la.getPageNumber());
-		System.out.println(la.getOffset());
+		LogicalAddress la = new LogicalAddress(30198);
+		System.out.print("Logical Address: " + la.getLogicalAddress() + " ");
+		System.out.print("Page Number: " + la.getPageNumber() + " ");
+		System.out.println("Offset: " + la.getOffset());
 	}
 }
