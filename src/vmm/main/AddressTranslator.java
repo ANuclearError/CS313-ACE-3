@@ -9,6 +9,8 @@ import java.io.RandomAccessFile;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import vmm.replace.FIFO;
+
 /**
  * This class is the central area of the memory manager. The class will read the
  * input file and translate each address within it, while keeping track of the
@@ -17,6 +19,7 @@ import java.util.Scanner;
  *
  */
 public class AddressTranslator {
+	private TLB tlb;
 	private PageTable pt;
 	private PhysicalMemory pm;
 	
@@ -24,6 +27,7 @@ public class AddressTranslator {
 	private String backingFileName;
 	
 	private int pageFaults;
+	private int tlbMisses;
 	private int count;
 	
 	/**
@@ -31,6 +35,7 @@ public class AddressTranslator {
 	 * this will eventually be changed.
 	 */
 	public AddressTranslator(){
+		tlb = new TLB(16, new FIFO(16));
 		pt = new PageTable(256);
 		pm = new PhysicalMemory(256);
 		
@@ -90,13 +95,17 @@ public class AddressTranslator {
 		LogicalAddress la = new LogicalAddress(address);
 		
 		int pageNum = la.getPageNumber();
-		int frameNum = pt.lookup(pageNum);
+		int frameNum = tlb.lookup(pageNum);
 		
-		// Page faults is found.
+		// Page fault
 		if(frameNum < 0){
-			pageFaults++;
-			pageFault(pageNum);
-			frameNum = pt.lookup(pageNum);
+			tlbMisses++;
+			frameNum = pm.lookup(pageNum);
+			if (frameNum < 0) {
+				pageFaults++;
+				pageFault(pageNum);
+				frameNum = pt.lookup(pageNum);
+			}
 		}
 		
 		int physicalAddress = (frameNum * 256) + la.getOffset();
@@ -111,7 +120,7 @@ public class AddressTranslator {
 	
 	/**
 	 * Page faults are handled here, the backing store file is read to find the
-	 * data ot be added to memory. 
+	 * data to be added to memory. 
 	 * 
 	 * @param pageNum - The page number being translated.
 	 */
@@ -123,7 +132,7 @@ public class AddressTranslator {
 				backingStore.seek(pageNum * 256); // The data is stored here.
 				
 				byte[] data = new byte[256];
-				backingStore.read(data); // Data is readed
+				backingStore.read(data); // Data is read
 				update(data, pageNum);  // Data is updated
 				
 				backingStore.close();
