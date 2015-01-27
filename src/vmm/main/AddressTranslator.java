@@ -15,7 +15,7 @@ import vmm.replace.FIFO;
  * This class is the central area of the memory manager. The class will read the
  * input file and translate each address within it, while keeping track of the
  * various statistics that are to be recorded.
- * @author wlb12153
+ * @author Aidan O'Grady
  *
  */
 public class AddressTranslator {
@@ -25,11 +25,7 @@ public class AddressTranslator {
 	
 	private String inputFileName;
 	private String backingFileName;
-	
-	private int pageFaults;
-	private int tlbMisses;
-	private int count;
-	
+		
 	/**
 	 * Constructs a new translator, currently used hard coded values, though
 	 * this will eventually be changed.
@@ -42,6 +38,7 @@ public class AddressTranslator {
 		backingFileName = "files/BACKING_STORE";
 		inputFileName = "input/InputFile.txt";
 		readInput();
+		statistics();
 	}
 	
 	/**
@@ -78,10 +75,6 @@ public class AddressTranslator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Page faults: " + pageFaults);
-		System.out.println("Count: " + count);
-		float faultRate = (float)pageFaults/(float)count * 100;
-		System.out.println("Page fault rate: " + faultRate + "%");
 	}
 	
 	/**
@@ -92,30 +85,29 @@ public class AddressTranslator {
 	 * @param address - the address to be translated.
 	 */
 	private void translate(int address){
-		LogicalAddress la = new LogicalAddress(address);
+		int frameNum = -1;
 		
-		int pageNum = la.getPageNumber();
-		int frameNum = tlb.lookup(pageNum);
+		// Parse the page number and offset from address.
+		int pageNum = (address & 0x0000FF00) >> 8;
+		int offset = (address & 0xFF);
 		
-		// Page fault
-		if(frameNum < 0){
-			tlbMisses++;
-			frameNum = pm.lookup(pageNum);
-			if (frameNum < 0) {
-				pageFaults++;
-				pageFault(pageNum);
-				frameNum = pt.lookup(pageNum);
+		frameNum = tlb.lookup(pageNum);
+		if(frameNum < 0){ // TLB Miss
+			frameNum = pt.lookup(pageNum);
+			if(frameNum < 0){ // Page Fault
+				frameNum = pageFault(pageNum);
+			} else{
+				tlb.insert(pageNum, frameNum);
 			}
 		}
 		
-		int physicalAddress = (frameNum * 256) + la.getOffset();
+		int physicalAddress = (frameNum * 256) + offset;
 		int value = pm.lookup(physicalAddress);
-		
 		//Display output.
 		System.out.print("Logical Address: " + address);
 		System.out.print(" Physical Address: " + physicalAddress);
 		System.out.println(" Value: " + value);
-		count++;
+
 	}
 	
 	/**
@@ -124,35 +116,44 @@ public class AddressTranslator {
 	 * 
 	 * @param pageNum - The page number being translated.
 	 */
-	private void pageFault(int pageNum){
-			try {
-				File file = new File(backingFileName);
-				RandomAccessFile backingStore = new RandomAccessFile(file, "r");
+	private int pageFault(int pageNum){
+		int frameNum = -1;
+		try {
+			File file = new File(backingFileName);
+			RandomAccessFile backingStore = new RandomAccessFile(file, "r");
+			
+			backingStore.seek(pageNum * 256); // The data is stored here.
 				
-				backingStore.seek(pageNum * 256); // The data is stored here.
-				
-				byte[] data = new byte[256];
-				backingStore.read(data); // Data is read
-				update(data, pageNum);  // Data is updated
-				
-				backingStore.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			byte[] data = new byte[256];
+			
+			backingStore.read(data); // Data is read
+			
+			frameNum = pm.insert(data);  // Data is updated
+			
+			pt.insert(pageNum, frameNum);
+			tlb.insert(pageNum, frameNum);
+		 		
+			backingStore.close();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return frameNum;
 	}
-
-	/**
-	 * Updated the page table and physical memory with the given data.
-	 * @param data - The data to be added to memory.
-	 * @param pageNum - The page to be updated
-	 */
-	private void update(byte[] data, int pageNum) {
-		int frame = pm.update(data);
-		pt.update(pageNum, frame);
+	
+	private void statistics(){
+		System.out.println("----------");
+		System.out.print("TLB Lookups: " + tlb.getChecks());
+		System.out.print(" | TLB Misses: " + tlb.getMisses());
+		System.out.println(" | TLB Miss Rate: " + tlb.getMissRate());
+		System.out.println("----------");
+		System.out.print("Page Table Lookups: " + pt.getChecks());
+		System.out.print(" | Page Table Faults: " + pt.getFaults());
+		System.out.println(" | Page Table Fault Rate: " + pt.getFaultRate());
 	}
 	
 	/**

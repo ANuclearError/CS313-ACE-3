@@ -26,6 +26,10 @@ public class PageTable {
 	 */
 	private int size;
 	
+	private int checks;
+	
+	private int faults;
+	
 	/**
 	 * Constructs a new page table of a given size.
 	 * 
@@ -40,6 +44,9 @@ public class PageTable {
 		for(int i=0; i<this.size; i++){
 			pageTable[i] = -1;
 		}
+		
+		checks = 0;
+		faults = 0;
 	}
 	
 	/**
@@ -48,6 +55,10 @@ public class PageTable {
 	 * @return the page's content. If the page is empty, -1 is returned.
 	 */
 	public int lookup(int page){
+		checks++;
+		if(pageTable[page] < 0){
+			faults++;
+		}
 		return pageTable[page];
 	}
 	
@@ -58,8 +69,21 @@ public class PageTable {
 	 * @param frame - the data to be written to the page.
 	 * @param page - the page to be updated.
 	 */
-	public void update(int page, int frame){
+	public void insert(int page, int frame){
 		pageTable[page] = frame;
 	}
+	
+	public float getFaultRate(){
+		float faultRate = (float)faults/(float)checks * 100;
+		return faultRate;
+	}
+	
+	public int getChecks(){
+		return checks;
+	}
+	public int getFaults(){
+		return faults;
+	}
+
 	
 }

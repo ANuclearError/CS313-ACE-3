@@ -59,12 +59,12 @@ public class PhysicalMemory {
 	 * @param data - the bytes to be added to memory
 	 * @return the frame that the data was added to.
 	 */
-	public int update(byte[] data){
+	public int insert(byte[] data){
 		int frame = nextIndex;
 		if(nextIndex < frameNum){
 			physicalMemory[nextIndex] = data;
 			nextIndex++; // The next available index is updated.
 		}
-		return frame; // Note, this needs improved, right now it seems dodgy.
+		return frame; // Note, this needs improved, right now it seems dodgey.
 	}
 }

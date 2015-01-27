@@ -1,7 +1,5 @@
 package vmm.main;
 
-import java.util.Arrays;
-
 import vmm.replace.*;
 
 public class TLB {
@@ -9,12 +7,23 @@ public class TLB {
 	private int[][] tlb;
 	private int size;
 	
+	private int misses;
+	private int checks;
+	
 	private ReplacementAlgorithm algo;
 	
 	public TLB(int size, ReplacementAlgorithm algo){
 		this.size = size;
-		this.tlb = new int[size][2];
+		tlb = new int[size][2];
 		this.algo = algo;
+		
+		misses = 0;
+		checks = 0;
+		
+		for(int i=0; i < size; i++){
+			tlb[i][0] = -1;
+			tlb[i][1] = -1;
+		}
 	}
 	
 	public void insert(int pageNum, int frameNum){
@@ -24,10 +33,13 @@ public class TLB {
 	}
 	
 	public int lookup(int pageNum){
+		checks++;
 		for(int i=0; i<size; i++){
 			if(tlb[i][0] == pageNum)
 				return tlb[i][1];
 		}
+		// TLB miss has occurred
+		misses++;
 		return -1;
 	}
 	
@@ -38,5 +50,17 @@ public class TLB {
 		}
 		string += "}";
 		System.out.println(string);
+	}
+	
+	public float getMissRate(){
+		float missRate = (float)misses/(float)checks * 100;
+		return missRate;
+	}
+	
+	public int getChecks(){
+		return checks;
+	}
+	public int getMisses(){
+		return misses;
 	}
 }
