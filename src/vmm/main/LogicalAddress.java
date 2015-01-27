@@ -8,7 +8,7 @@ package vmm.main;
  * independent and may be infused with another class if need be.
  * 
  * @author Aidan O'Grady
- * @version 0.2
+ * @version 0.3
  * @since 0.1
  *
  */

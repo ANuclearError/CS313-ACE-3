@@ -16,3 +16,18 @@ Finished:
 		'LogicalAddress' was implemented to achieve this. In addition, the JUnit
 		testing class 'LogicalAddressTest' was also created to ensure that the
 		method of extracting page number and offset was correct.
+
+	v0.2 - 22/01/2015 - 26/01/2015
+
+		The page table and physical memory were created, along with the body of
+		the memory manager. The system was now able to simulate the translation
+		and reading of various addresses without the use of the TLB, which was
+		to come later.
+
+	v0.3 - 27/01/2015
+
+		The TLB is implemented with a FIFO algoritm, while a Random algorithm
+		was also implemented, it is yet to be tested. The TLB has been added to
+		the simulator, so now we have a basic virtual memory manager created.
+		There were issues with adding the TLB to the manager, due to how it was
+		structured in its abscence, this has since been fixed however.

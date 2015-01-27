@@ -15,15 +15,36 @@ import vmm.replace.FIFO;
  * This class is the central area of the memory manager. The class will read the
  * input file and translate each address within it, while keeping track of the
  * various statistics that are to be recorded.
+ * 
  * @author Aidan O'Grady
+ * @version 0.3
+ * @since 0.2
  *
  */
 public class AddressTranslator {
+	/**
+	 * The memory manager's TLB
+	 */
 	private TLB tlb;
+	
+	/**
+	 * The memory manager's Page Table
+	 */
 	private PageTable pt;
+	
+	/**
+	 * The memory manager's Physical Memory
+	 */
 	private PhysicalMemory pm;
 	
+	/**
+	 * The name of the input file
+	 */
 	private String inputFileName;
+	
+	/**
+	 * The backing storage name file
+	 */
 	private String backingFileName;
 		
 	/**
@@ -31,6 +52,9 @@ public class AddressTranslator {
 	 * this will eventually be changed.
 	 */
 	public AddressTranslator(){
+		
+		// TODO: Not have magic numbers etc
+		
 		tlb = new TLB(16, new FIFO(16));
 		pt = new PageTable(256);
 		pm = new PhysicalMemory(256);
@@ -43,6 +67,8 @@ public class AddressTranslator {
 	
 	/**
 	 * The input file is read, to start the translating process.
+	 * Whenever a line is read from the file, it will be translated and its
+	 * results displayed.
 	 */
 	private void readInput(){
 		String line = "";
@@ -91,18 +117,20 @@ public class AddressTranslator {
 		int pageNum = (address & 0x0000FF00) >> 8;
 		int offset = (address & 0xFF);
 		
-		frameNum = tlb.lookup(pageNum);
+		frameNum = tlb.lookup(pageNum); // TLB lookup
+		
 		if(frameNum < 0){ // TLB Miss
 			frameNum = pt.lookup(pageNum);
-			if(frameNum < 0){ // Page Fault
+			
+			if(frameNum < 0) // Page Fault
 				frameNum = pageFault(pageNum);
-			} else{
-				tlb.insert(pageNum, frameNum);
-			}
+				
+			tlb.insert(pageNum, frameNum);
 		}
 		
 		int physicalAddress = (frameNum * 256) + offset;
 		int value = pm.lookup(physicalAddress);
+		
 		//Display output.
 		System.out.print("Logical Address: " + address);
 		System.out.print(" Physical Address: " + physicalAddress);
@@ -128,10 +156,10 @@ public class AddressTranslator {
 			
 			backingStore.read(data); // Data is read
 			
-			frameNum = pm.insert(data);  // Data is updated
+			frameNum = pm.insert(data);  // Memory is updated
 			
+			// The Page Table must be updated now.
 			pt.insert(pageNum, frameNum);
-			tlb.insert(pageNum, frameNum);
 		 		
 			backingStore.close();
 			
@@ -145,6 +173,9 @@ public class AddressTranslator {
 		return frameNum;
 	}
 	
+	/**
+	 * Prints statistics about TLB and PT.
+	 */
 	private void statistics(){
 		System.out.println("----------");
 		System.out.print("TLB Lookups: " + tlb.getChecks());
