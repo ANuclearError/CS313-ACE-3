@@ -1,4 +1,4 @@
-package vmm.main;
+package vmm.manager;
 
 import vmm.replace.*;
 
@@ -10,7 +10,7 @@ import vmm.replace.*;
  * it.
  * 
  * @author Aidan O'Grady
- * @version 0.3
+ * @version 1.0
  * @since 0.3
  *
  */

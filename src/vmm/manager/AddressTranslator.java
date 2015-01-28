@@ -1,4 +1,4 @@
-package vmm.main;
+package vmm.manager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +17,7 @@ import vmm.replace.*;
  * various statistics that are to be recorded.
  * 
  * @author Aidan O'Grady
- * @version 0.3
+ * @version 1.0
  * @since 0.2
  *
  */

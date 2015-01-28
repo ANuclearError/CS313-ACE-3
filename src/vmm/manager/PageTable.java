@@ -1,4 +1,4 @@
-package vmm.main;
+package vmm.manager;
 
 /**
  * This class is responsible for acting as the page table in our virtual
@@ -9,7 +9,7 @@ package vmm.main;
  * strike.
  * 
  * @author Aidan O'Grady
- * @version 0.3
+ * @version 1.0
  * @since 0.2
  *
  */

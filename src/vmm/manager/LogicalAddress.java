@@ -1,4 +1,4 @@
-package vmm.main;
+package vmm.manager;
 /**
  * This class will be in charge of extracting the page number and offset from a
  * given logical address. Setters and getters will be used to allow for the

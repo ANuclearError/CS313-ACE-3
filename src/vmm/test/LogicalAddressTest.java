@@ -1,8 +1,10 @@
 package vmm.test;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
-import vmm.main.*;
+
+import vmm.manager.*;
 
 /**
  * The following tests are based upon the 'How to Begin' section of the book's
@@ -10,7 +12,7 @@ import vmm.main.*;
  * basic nature of the class.
  * 
  * @author Aidan O'Grady
- * @version 0.1
+ * @version 1.0
  * @since 0.1
  *
  */

@@ -2,10 +2,10 @@ CS313-ACE-3 VERSION HISTORY
 
 ================================================================================
 
-Version 0.0: Preparations
+Version 0.0: Virtual Memory Manager
 
 Commenced: 21/01/2015
-Finished:
+Finished: 28/01/2015
 
 --------------------------------------------------------------------------------
 
@@ -26,16 +26,24 @@ Finished:
 
 	v0.3 - 27/01/2015
 
-		The TLB is implemented with a FIFO algoritm, while a Random algorithm
+		The TLB is implemented with a FIFO algorithm, while a Random algorithm
 		was also implemented, it is yet to be tested. The TLB has been added to
 		the simulator, so now we have a basic virtual memory manager created.
 		There were issues with adding the TLB to the manager, due to how it was
-		structured in its abscence, this has since been fixed however.
+		structured in its absence, this has since been fixed however.
 
 	v0.4 - 28/01/2015
 
 		Added the least recently used replacement policy for the TLB. This is
 		the one I have the most dislike of how I implemented it, since it was
-		required to be updated during TLB hits, whhen the other policies could
+		required to be updated during TLB hits, when the other policies could
 		ignore them. I will be looking for ways to fix this, although I think it
 		will be a low priority.
+	
+	v1.0 - 28/01/2015
+	
+		I feel I have safely met the base specifications of the assignment. I am
+		now beginning work on refining the manager to allow for a more flexible
+		system. The class Input.java is such an example, its purpose being to
+		handle any user input. 
+		

@@ -1,4 +1,4 @@
-package vmm.main;
+package vmm.manager;
 
 /**
  * This class represents our physical memory, and is essentially a 2d array of
@@ -6,7 +6,7 @@ package vmm.main;
  * execution of the program.
  * 
  * @author Aidan O'Grady
- * @version 0.3
+ * @version 1.0
  * @since 0.2
  *
  */
