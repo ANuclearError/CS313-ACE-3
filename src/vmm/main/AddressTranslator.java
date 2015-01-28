@@ -62,8 +62,22 @@ public class AddressTranslator {
 		backingFileName = "files/BACKING_STORE";
 		inputFileName = "input/InputFile.txt";
 		long startTime = System.nanoTime();
+		startInfo();
 		readInput();
 		statistics(startTime);
+	}
+	
+	private void startInfo(){
+		System.out.println("TLB size: " + 16 + " entries");
+		System.out.println("TLB Replacement Algorithm: Random");
+		System.out.println("Page Table Size: " + 256 +  " pages");
+		System.out.println("Page Size: " + 256 + " bytes");
+		System.out.println("Physical Memory Size: " + 256 + " frames");
+		System.out.println("Physical Memory Frame Size: " + 256 + " bytes");
+		System.out.println("Input file: " + inputFileName);
+		System.out.println("Backing Storage file: " + backingFileName);
+		System.out.println("----------");
+
 	}
 	
 	/**
