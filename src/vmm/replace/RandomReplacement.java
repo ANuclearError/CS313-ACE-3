@@ -12,7 +12,7 @@ import java.util.Random;
  * @since 0.3
  *
  */
-public class RandomReplacement implements ReplacementAlgorithm{
+public class RandomReplacement implements Replacement{
 	/**
 	 * The upper limit of the RNG, based on the size of the TLB
 	 */
@@ -22,6 +22,8 @@ public class RandomReplacement implements ReplacementAlgorithm{
 	 * The RNG
 	 */
 	private Random rng;
+	
+	private int next;
 	
 	/**
 	 * Constructs the algorithm
@@ -35,6 +37,10 @@ public class RandomReplacement implements ReplacementAlgorithm{
 	@Override
 	public int getIndex() {
 		return rng.nextInt(size);
+	}
+	
+	@Override
+	public void update(int index, int check){
 	}
 
 }

@@ -11,7 +11,7 @@ package vmm.replace;
  * @since 0.3
  *
  */
-public class FIFO implements ReplacementAlgorithm{
+public class FIFO implements Replacement{
 	
 	/**
 	 * The next index to be replaced
@@ -38,6 +38,12 @@ public class FIFO implements ReplacementAlgorithm{
 		nextIndex++;
 		nextIndex = nextIndex % size; // Ensures the circularity of the array
 		return index;
+	}
+
+	@Override
+	public void update(int index, int check) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

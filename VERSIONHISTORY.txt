@@ -31,3 +31,11 @@ Finished:
 		the simulator, so now we have a basic virtual memory manager created.
 		There were issues with adding the TLB to the manager, due to how it was
 		structured in its abscence, this has since been fixed however.
+
+	v0.4 - 28/01/2015
+
+		Added the least recently used replacement policy for the TLB. This is
+		the one I have the most dislike of how I implemented it, since it was
+		required to be updated during TLB hits, whhen the other policies could
+		ignore them. I will be looking for ways to fix this, although I think it
+		will be a low priority.

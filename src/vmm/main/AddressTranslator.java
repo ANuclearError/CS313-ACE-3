@@ -9,7 +9,7 @@ import java.io.RandomAccessFile;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import vmm.replace.FIFO;
+import vmm.replace.*;
 
 /**
  * This class is the central area of the memory manager. The class will read the
@@ -55,14 +55,15 @@ public class AddressTranslator {
 		
 		// TODO: Not have magic numbers etc
 		
-		tlb = new TLB(16, new FIFO(16));
+		tlb = new TLB(16, new RandomReplacement(16));
 		pt = new PageTable(256);
 		pm = new PhysicalMemory(256);
 		
 		backingFileName = "files/BACKING_STORE";
 		inputFileName = "input/InputFile.txt";
+		long startTime = System.nanoTime();
 		readInput();
-		statistics();
+		statistics(startTime);
 	}
 	
 	/**
@@ -176,7 +177,11 @@ public class AddressTranslator {
 	/**
 	 * Prints statistics about TLB and PT.
 	 */
-	private void statistics(){
+	private void statistics(long startTime){
+		long endTime = System.nanoTime();
+		long duration = endTime - startTime;
+		System.out.println("----------");
+		System.out.println("Duration (ms): " + (duration/1000000));
 		System.out.println("----------");
 		System.out.print("TLB Lookups: " + tlb.getChecks());
 		System.out.print(" | TLB Misses: " + tlb.getMisses());

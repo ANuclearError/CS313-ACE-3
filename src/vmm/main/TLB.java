@@ -39,7 +39,7 @@ public class TLB {
 	/**
 	 * The replacement algorithm to be used.
 	 */
-	private ReplacementAlgorithm algo;
+	private Replacement algo;
 	
 	/**
 	 * Constructs a new TLB of a given length and using the given algorithm.
@@ -47,7 +47,7 @@ public class TLB {
 	 * @param size - the number of entries to be included
 	 * @param algo - the replacement algorithm to be used
 	 */
-	public TLB(int size, ReplacementAlgorithm algo){
+	public TLB(int size, Replacement algo){
 		this.size = size;
 		tlb = new int[size][2];
 		this.algo = algo;
@@ -74,6 +74,7 @@ public class TLB {
 		int index = algo.getIndex(); // The index to be added to
 		tlb[index][0] = pageNum;
 		tlb[index][1] = frameNum;
+		algo.update(index, checks);
 	}
 	
 	/**
@@ -86,8 +87,10 @@ public class TLB {
 		checks++;
 		// TODO use more efficient search
 		for(int i=0; i<size; i++){
-			if(tlb[i][0] == pageNum)
+			if(tlb[i][0] == pageNum){
+				algo.update(i, checks);
 				return tlb[i][1];
+			}
 		}
 		// TLB miss has occurred
 		misses++;
