@@ -55,7 +55,7 @@ public class AddressTranslator {
 		
 		// TODO: Not have magic numbers etc
 		
-		tlb = new TLB(16, new RandomReplacement(16));
+		tlb = new TLB(16, new FIFO(16));
 		pt = new PageTable(256);
 		pm = new PhysicalMemory(256);
 		

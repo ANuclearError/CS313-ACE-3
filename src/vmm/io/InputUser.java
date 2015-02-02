@@ -1,4 +1,4 @@
-package vmm.view;
+package vmm.io;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -14,11 +14,11 @@ import java.util.Scanner;
  * @since 1.0
  *
  */
-public class Input {
+public class InputUser {
 
 	private Scanner scanner;
 	
-	public Input(){
+	public InputUser(){
 		scanner = new Scanner(System.in);
 	}
 	
