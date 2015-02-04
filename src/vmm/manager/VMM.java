@@ -1,5 +1,6 @@
 package vmm.manager;
 
+import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -62,8 +63,9 @@ public class VMM {
 			File file = new File("output");
 			file.mkdirs();
 			
+			file = new File(output);
 			
-			FileWriter fw = new FileWriter(output);
+			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
 			Scanner sc = null;
@@ -83,6 +85,9 @@ public class VMM {
 				
 				line = lnr.readLine();
 			}
+			
+			Desktop.getDesktop().open(file);
+			
 			bw.close();
 			lnr.close();
 		} catch (FileNotFoundException e) {
