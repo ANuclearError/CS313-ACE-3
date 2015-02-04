@@ -47,3 +47,11 @@ Finished: 28/01/2015
 		system. The class Input.java is such an example, its purpose being to
 		handle any user input. 
 		
+	v1.1 - 4/02/2015
+	
+		A fairly significant overhaul was undertaken. The previous class
+		AddressTranslator was split into two different classes, Translator
+		and VMM. Translator is responsible for the conversion of addresses while
+		VMM handled the file reading and new file writing. The results are now
+		read to a file, while only the statistics are printed to console.
+		The backing storage was also made into it's own class BackingStore.

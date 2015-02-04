@@ -6,7 +6,7 @@ package vmm.manager;
  * execution of the program.
  * 
  * @author Aidan O'Grady
- * @version 1.0
+ * @version 1.1
  * @since 0.2
  *
  */
