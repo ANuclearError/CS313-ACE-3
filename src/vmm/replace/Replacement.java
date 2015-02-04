@@ -24,4 +24,6 @@ public interface Replacement {
 	 * @param check - The nth time the TLB has been looked up
 	 */
 	public void update(int index, int check);
+	
+	public String getName();
 }

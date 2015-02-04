@@ -102,7 +102,7 @@ public class Translator {
 	 */
 	public void startInfo(){
 		System.out.println("TLB size: " + 16 + " entries");
-		System.out.println("TLB Replacement Algorithm: FIFO");
+		System.out.println("TLB Replacement Algorithm: " + tlb.getAlgoName());
 		System.out.println("Page Table Size: " + 256 +  " pages");
 		System.out.println("Page Size: " + 256 + " bytes");
 		System.out.println("Physical Memory Size: " + 256 + " frames");

@@ -1,4 +1,4 @@
-package vmm.manager;
+package vmm.application;
 
 import java.awt.Desktop;
 import java.io.BufferedWriter;
@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import vmm.manager.Translator;
+
 /**
  * The VMM wraps everything together in a nice wee package. The VMM is in charge
  * of reading virtual addresses from a file, using the translator to translate
@@ -23,6 +25,11 @@ import java.util.Scanner;
  *
  */
 public class VMM {
+	
+	/**
+	 * The location of the input file
+	 */
+	private String inputFile;
 	
 	/**
 	 * The translator used within the system
@@ -36,8 +43,15 @@ public class VMM {
 	 */
 	public VMM(String filename){
 		translator = new Translator();
+		inputFile = filename;
+	}
+	
+	/**
+	 * Starts the process.
+	 */
+	public void run(){
 		translator.startInfo();
-		readInput(filename);
+		readInput(inputFile);
 		translator.statistics();
 	}
 	
@@ -61,7 +75,8 @@ public class VMM {
 			
 			// Ensuring that the output folder exists
 			File file = new File("output");
-			file.mkdirs();
+			if(!file.exists())
+				file.mkdirs();
 			
 			file = new File(output);
 			
@@ -99,9 +114,5 @@ public class VMM {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public static void main(String[] args){
-		VMM vmm = new VMM("input/InputFile.txt");
 	}
 }

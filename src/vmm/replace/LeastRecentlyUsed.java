@@ -48,5 +48,10 @@ public class LeastRecentlyUsed implements Replacement{
 	public void update(int index, int check){
 		counts[index] = check;
 	}
+
+	@Override
+	public String getName() {
+		return "LRU";
+	}
 	
 }

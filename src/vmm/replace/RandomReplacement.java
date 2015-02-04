@@ -43,4 +43,9 @@ public class RandomReplacement implements Replacement{
 	public void update(int index, int check){
 	}
 
+	@Override
+	public String getName() {
+		return "Random";
+	}
+
 }

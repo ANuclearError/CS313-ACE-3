@@ -121,4 +121,8 @@ public class TLB {
 	public int getMisses(){
 		return misses;
 	}
+	
+	public String getAlgoName(){
+		return algo.getName();
+	}
 }

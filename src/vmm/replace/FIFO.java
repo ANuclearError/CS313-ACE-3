@@ -46,4 +46,9 @@ public class FIFO implements Replacement{
 		
 	}
 
+	@Override
+	public String getName() {
+		return "FIFO";
+	}
+
 }
