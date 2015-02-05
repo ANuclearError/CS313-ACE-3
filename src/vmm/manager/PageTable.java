@@ -9,7 +9,7 @@ package vmm.manager;
  * strike.
  * 
  * @author Aidan O'Grady
- * @version 1.1
+ * @version 1.2
  * @since 0.2
  *
  */
@@ -26,8 +26,14 @@ public class PageTable {
 	 */
 	private int size;
 	
+	/**
+	 * The number of times the page table has been looked up.
+	 */
 	private int checks;
 	
+	/**
+	 * The number of page faults that has happened.
+	 */
 	private int faults;
 	
 	/**
@@ -73,16 +79,41 @@ public class PageTable {
 		pageTable[page] = frame;
 	}
 	
+	/**
+	 * Returns the calculated page fault rate of the page table
+	 * 
+	 * @return the fault rate
+	 */
 	public float getFaultRate(){
 		float faultRate = (float)faults/(float)checks * 100;
 		return faultRate;
 	}
 	
+	/**
+	 * Returns the number of times lookup has been called.
+	 * 
+	 * @return number of checks
+	 */
 	public int getChecks(){
 		return checks;
 	}
+	
+	/**
+	 * Returns the number of page faults that has happened
+	 * 
+	 * @return number of page faults
+	 */
 	public int getFaults(){
 		return faults;
+	}
+	
+	/**
+	 * Returns the size (number of entries) in the page table
+	 * 
+	 * @return size
+	 */
+	public int getSize(){
+		return size;
 	}
 
 	

@@ -8,7 +8,7 @@ package vmm.replace;
  * time an entry is looked up.
  * 
  * @author Aidan O'Grady
- * @version 1.0
+ * @version 1.2
  * @since 0.4
  *
  */

@@ -6,7 +6,7 @@ package vmm.manager;
  * execution of the program.
  * 
  * @author Aidan O'Grady
- * @version 1.1
+ * @version 1.2
  * @since 0.2
  *
  */
@@ -25,17 +25,25 @@ public class PhysicalMemory {
 	/**
 	 * The number of frames within memory.
 	 */
-	private int frameNum;
+	private int size;
+	
+	/**
+	 * The size of a single frame
+	 */
+	private int frameSize;
 	
 	/**
 	 * Constructs new physical memory with a given number of frames.
 	 * 
 	 * @param noOfFrames - the number of frames to be included.
 	 */
-	public PhysicalMemory(int noOfFrames){
-		frameNum = noOfFrames;
+	public PhysicalMemory(int size, int frameSize){
+		this.size = size;
+		this.frameSize = frameSize;
+		
 		nextIndex = 0;
-		physicalMemory = new byte[frameNum][256];
+		
+		physicalMemory = new byte[this.size][this.frameSize];
 	}
 	
 	/**
@@ -61,10 +69,28 @@ public class PhysicalMemory {
 	 */
 	public int insert(byte[] data){
 		int frame = nextIndex;
-		if(nextIndex < frameNum){
+		if(nextIndex < size){
 			physicalMemory[nextIndex] = data;
 			nextIndex++; // The next available index is updated.
 		}
 		return frame; // Note, this needs improved, right now it seems dodgey.
+	}
+	
+	/**
+	 * Returns the number of frames in memory
+	 * 
+	 * @return number of frames
+	 */
+	public int getSize(){
+		return size;
+	}
+	
+	/**
+	 * Returns the size of a single frame
+	 * 
+	 * @return frame size
+	 */
+	public int getFrameSize(){
+		return frameSize;
 	}
 }

@@ -13,8 +13,6 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import vmm.manager.Translator;
-
 /**
  * The VMM wraps everything together in a nice wee package. The VMM is in charge
  * of reading virtual addresses from a file, using the translator to translate
@@ -22,6 +20,8 @@ import vmm.manager.Translator;
  * input file.
  * 
  * @author wlb12153
+ * @version 1.2
+ * @since 1.1
  *
  */
 public class VMM {
@@ -35,6 +35,21 @@ public class VMM {
 	 * The translator used within the system
 	 */
 	private Translator translator;
+	
+	/**
+	 * LNR reads in the input
+	 */
+	private LineNumberReader lnr;
+	
+	/**
+	 * Output writing
+	 */
+	private BufferedWriter bw;
+	
+	/**
+	 * File used to storing output
+	 */
+	private File file;
 	
 	/**
 	 * Constructs a new virtual memory manager using input from the given file.
@@ -51,8 +66,45 @@ public class VMM {
 	 */
 	public void run(){
 		translator.startInfo();
-		readInput(inputFile);
+		openFiles(inputFile);
+		start();
 		translator.statistics();
+	}
+	
+	/**
+	 * Opens up the files required for reading and writing
+	 * 
+	 * @param filename - the location of the input file
+	 */
+	private void openFiles(String filename){
+		try {
+			FileReader fr = new FileReader(filename);
+			// LNR is used since I'm too lazy to keep track myself.
+			lnr = new LineNumberReader(fr);
+			
+			// The output folder includes a timestamp
+			SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+			String output = "output/" + sdf.format(new Date()) + ".txt";
+			
+			// Ensuring that the output folder exists
+			file = new File("output");
+			if(!file.exists())
+				file.mkdirs();
+						
+			file = new File(output);
+						
+			FileWriter fw = new FileWriter(file);
+			bw = new BufferedWriter(fw);
+			
+			System.out.println("Reading input from '" + filename + "'...");
+			System.out.println("Writing results to '" + output + "'...");
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -61,32 +113,12 @@ public class VMM {
 	 * 
 	 * @param filename - the location of the input file
 	 */
-	private void readInput(String filename){
+	private void start(){
 		String line = "";
 		int lineNum = 0;
 		try {
-			FileReader fr = new FileReader(filename);
-			// LNR is used since I'm too lazy to keep track myself.
-			LineNumberReader lnr = new LineNumberReader(fr);
-			
-			// The output folder includes a timestamp
-			SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-			String output = "output/" + sdf.format(new Date()) + ".txt";
-			
-			// Ensuring that the output folder exists
-			File file = new File("output");
-			if(!file.exists())
-				file.mkdirs();
-			
-			file = new File(output);
-			
-			FileWriter fw = new FileWriter(file);
-			BufferedWriter bw = new BufferedWriter(fw);
-			
 			Scanner sc = null;
 			line = lnr.readLine();
-			System.out.println("Reading input from '" + filename + "'...");
-			System.out.println("Writing results to '" + output + "'...");
 
 			// Go through each line.
 			while(line != null){
@@ -108,8 +140,9 @@ public class VMM {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (InputMismatchException e) {
-			System.out.print("ERROR: Input mismatch at line " + lineNum + " '" + 
-					line + "'.");
+			System.out.println("ERROR: Input mismatch at line " + lineNum + " '"
+					+ line + "'.");
+			System.exit(0);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

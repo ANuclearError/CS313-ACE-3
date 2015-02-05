@@ -10,7 +10,7 @@ import vmm.replace.*;
  * it.
  * 
  * @author Aidan O'Grady
- * @version 1.1
+ * @version 1.2
  * @since 0.3
  *
  */
@@ -122,6 +122,20 @@ public class TLB {
 		return misses;
 	}
 	
+	/**
+	 * Returns the size (number of entries) in the TLB
+	 * 
+	 * @return size
+	 */
+	public int getSize(){
+		return size;
+	}
+	
+	/**
+	 * Returns the name of the replacement policy being used
+	 * 
+	 * @return name of the algorithm
+	 */
 	public String getAlgoName(){
 		return algo.getName();
 	}

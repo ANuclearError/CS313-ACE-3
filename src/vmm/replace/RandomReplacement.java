@@ -8,7 +8,7 @@ import java.util.Random;
  * this random choice to take place.
  * 
  * @author Aidan O'Grady
- * @version 1.0
+ * @version 1.2
  * @since 0.3
  *
  */
@@ -22,9 +22,7 @@ public class RandomReplacement implements Replacement{
 	 * The RNG
 	 */
 	private Random rng;
-	
-	private int next;
-	
+		
 	/**
 	 * Constructs the algorithm
 	 * @param size - the size of the TLB using this algoritm

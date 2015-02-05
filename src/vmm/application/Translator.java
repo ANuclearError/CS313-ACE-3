@@ -1,5 +1,9 @@
-package vmm.manager;
+package vmm.application;
 
+import vmm.manager.BackingStore;
+import vmm.manager.PageTable;
+import vmm.manager.PhysicalMemory;
+import vmm.manager.TLB;
 import vmm.replace.FIFO;
 
 /**
@@ -9,7 +13,7 @@ import vmm.replace.FIFO;
  * the whole manager.
  * 
  * @author Aidan O'Grady
- * @version 1.1
+ * @version 1.2
  * @since 1.1
  *
  */
@@ -41,7 +45,7 @@ public class Translator {
 	public Translator(){
 		tlb = new TLB(16, new FIFO(16));
 		pt = new PageTable(256);
-		pm = new PhysicalMemory(256);
+		pm = new PhysicalMemory(256, 256);
 		bs = new BackingStore("files/BACKING_STORE");
 	}
 	
@@ -73,7 +77,7 @@ public class Translator {
 		int physicalAddress = (frameNum * 256) + offset;
 		int value = pm.lookup(physicalAddress);
 		
-		//Display output.
+		// Output.
 		String result = "Virtual address: " + address + " Physical address: " +
 				physicalAddress + " Value: " + value;
 		return result;
@@ -88,7 +92,7 @@ public class Translator {
 	 */
 	private int pageFault(int pageNum){
 		int frameNum = -1;
-		byte[] data = bs.read(pageNum*256);
+		byte[] data = bs.read(pageNum*256, 256);
 		frameNum = pm.insert(data);  // Memory is updated
 			
 		// The Page Table must be updated now.
@@ -101,12 +105,11 @@ public class Translator {
 	 * Prints information about the system set up.
 	 */
 	public void startInfo(){
-		System.out.println("TLB size: " + 16 + " entries");
+		System.out.println("TLB size: " + tlb.getSize() + " entries");
 		System.out.println("TLB Replacement Algorithm: " + tlb.getAlgoName());
-		System.out.println("Page Table Size: " + 256 +  " pages");
-		System.out.println("Page Size: " + 256 + " bytes");
-		System.out.println("Physical Memory Size: " + 256 + " frames");
-		System.out.println("Physical Memory Frame Size: " + 256 + " bytes");
+		System.out.println("Page Table Size: " + pt.getSize() +  " pages");
+		System.out.println("Physical Memory Size: " + pm.getSize() + " frames");
+		System.out.println("Frame Size: " + pm.getFrameSize() + " bytes");
 		System.out.println("Backing Storage file: " + bs.getFilename());
 		System.out.println("----------");
 

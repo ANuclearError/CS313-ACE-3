@@ -55,3 +55,9 @@ Finished: 28/01/2015
 		VMM handled the file reading and new file writing. The results are now
 		read to a file, while only the statistics are printed to console.
 		The backing storage was also made into it's own class BackingStore.
+		
+	v1.2 - 5/02/2015
+	
+		Added getters for all classes in vmm.manager to allow me to retrieve
+		the sizes of various elements. Split up VMM to that opening files is in
+		a different class from the actual reading/writing process.

@@ -11,7 +11,7 @@ import java.io.RandomAccessFile;
  * memory.
  * 
  * @author Aidan O'Grady
- * @version 1.1
+ * @version 1.2
  * @since 1.1
  *
  */
@@ -54,12 +54,14 @@ public class BackingStore {
 	 * Reads the file at the given location and returns the byte array found.
 	 * 
 	 * @param location - The location in the file to be read from
+	 * @param chunk - the number of bytes to be read
+	 * 
 	 * @return the byte array found at this location
 	 */
-	public byte[] read(int location){
+	public byte[] read(int location, int chunk){
 		try {
 			backingStore.seek(location);
-			byte[] data = new byte[256];
+			byte[] data = new byte[chunk];
 			backingStore.read(data); // Data is read
 			return data;
 		} catch (IOException e) {
