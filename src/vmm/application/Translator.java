@@ -4,7 +4,7 @@ import vmm.manager.BackingStore;
 import vmm.manager.PageTable;
 import vmm.manager.PhysicalMemory;
 import vmm.manager.TLB;
-import vmm.replace.FIFO;
+import vmm.replace.*;
 
 /**
  * The purpose of the Translator class is to handle the translation from logical
@@ -13,7 +13,7 @@ import vmm.replace.FIFO;
  * the whole manager.
  * 
  * @author Aidan O'Grady
- * @version 1.2
+ * @version 1.3
  * @since 1.1
  *
  */
@@ -40,13 +40,45 @@ public class Translator {
 	private BackingStore bs;
 	
 	/**
+	 * Determines the settings to be used.
+	 */
+	private Settings settings;
+	
+	/**
 	 * Constructs a new translator, currently with fixed values.
 	 */
 	public Translator(){
-		tlb = new TLB(16, new FIFO(16));
-		pt = new PageTable(256);
-		pm = new PhysicalMemory(256, 256);
-		bs = new BackingStore("files/BACKING_STORE");
+		settings = new Settings();
+		setup();
+	}
+	
+	/**
+	 * The various components of the system (TLB, Page Table etc) are created
+	 * here. The parameters for each component is derived from the settings
+	 * class, which contains all the information required.
+	 */
+	private void setup(){
+		try {
+			String policy = settings.getTLBReplacement().toLowerCase();
+			int tlbSize = settings.getTLBSize(); // Used alot, separate variable.
+			Replacement algo;
+			// Need to determine which policy is desired.
+			if(policy.equalsIgnoreCase("random"))
+				algo = new RandomReplacement(tlbSize);
+			if(policy.equalsIgnoreCase("lru"))
+				algo = new LeastRecentlyUsed(tlbSize);
+			else{ // If the string isn't valid, we resort to FIFO just in case.
+				algo = new FIFO(tlbSize);
+			}
+			tlb = new TLB(tlbSize, algo);
+			pt = new PageTable(settings.getPTSize());
+			pm = new PhysicalMemory(settings.getMemSize(), settings.getFrameSize());
+			bs = new BackingStore("files/BACKING_STORE");
+		} catch (NumberFormatException e) {
+			System.out.println("Error: The Settings file must be messed up.");
+			System.exit(0);
+		}
+
 	}
 	
 	/**

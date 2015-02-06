@@ -20,7 +20,7 @@ import java.util.Scanner;
  * input file.
  * 
  * @author wlb12153
- * @version 1.2
+ * @version 1.3
  * @since 1.1
  *
  */
