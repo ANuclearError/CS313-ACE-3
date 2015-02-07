@@ -22,6 +22,15 @@ To see the version history of this project, see VERSIONHISTORY.TXT for more
 information.
 
 ###Submission Info###
+The submission for the assignment includes:
+* Executable JAR file
+* src folder: All the source code
+* file folder: contains setting.properties and BACKING_STORE files
+* input folder: contains the input files required for execution
+
+In order to run the JAR file, the following command must be used:
+`java -jar CS313-ACE-3 <file>`
+Where file is the name of the input file.
 
 ###Output Example###
 
