@@ -18,7 +18,7 @@ public class Driver {
 			System.out.println("Usage: ACE3 <file>");
 			System.exit(0);
 		}
-		System.out.println("CS313 ACE 3 version 1.3");
+		System.out.println("CS313 ACE 3 version 1.4");
 		System.out.println("Author: Aidan O'Grady, Reg no. 201518150");
 		System.out.println("----------");
 		VMM manager = new VMM(args[0]);
