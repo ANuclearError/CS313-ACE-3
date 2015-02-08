@@ -30,7 +30,8 @@ The submission for the assignment includes:
 
 In order to run the JAR file, the following command must be used:
 `java -jar CS313-ACE-3 <file>`
-Where file is the name of the input file.
+Where file is the name of the input file.  The input file contains the file
+`InputFile.txt` to be used.
 
 ###Output Example###
 
