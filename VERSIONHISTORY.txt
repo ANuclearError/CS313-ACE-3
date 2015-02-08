@@ -60,4 +60,7 @@ Finished: 28/01/2015
 	
 		Added getters for all classes in vmm.manager to allow me to retrieve
 		the sizes of various elements. Split up VMM to that opening files is in
-		a different class from the actual reading/writing process.
+		a different class from the actual reading/writing process. The page
+		table was changed so that the index of the table refers to the frame in
+		memory rather than the page from virtual memory to allow easier
+		replacement policy implementation.

@@ -16,8 +16,8 @@ package vmm.manager;
 public class PageTable {
 	
 	/**
-	 * The page table, the index is the page number while its content is the
-	 * mapped frame.
+	 * The page table, the index is frame page number while its content is the
+	 * mapped page.
 	 */
 	private int[] pageTable;
 	
@@ -62,10 +62,12 @@ public class PageTable {
 	 */
 	public int lookup(int page){
 		checks++;
-		if(pageTable[page] < 0){
-			faults++;
+		for(int i=0; i<size; i++){
+			if(pageTable[i] == page)
+				return i;
 		}
-		return pageTable[page];
+		faults++;
+		return -1;
 	}
 	
 	/**
@@ -76,7 +78,7 @@ public class PageTable {
 	 * @param page - the page to be updated.
 	 */
 	public void insert(int page, int frame){
-		pageTable[page] = frame;
+		pageTable[frame] = page;
 	}
 	
 	/**
