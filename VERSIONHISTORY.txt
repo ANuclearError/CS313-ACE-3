@@ -64,3 +64,16 @@ Finished: 28/01/2015
 		table was changed so that the index of the table refers to the frame in
 		memory rather than the page from virtual memory to allow easier
 		replacement policy implementation.
+		
+	v1.3 - 6/02/2015
+	
+		Added the Settings class which allows me to store settings in a
+		.properties file so that parameters such as replacement policies can be
+		quickly changed.
+		
+	v1.4 - 08/02/2015
+	
+		Added basic JUnit tests to the program, which tests replacement policies
+		and comparing results to correct.txt. In addition, added page
+		replacement policy, so the program doesn't cry if the physical memory
+		is smaller than virtual memory.

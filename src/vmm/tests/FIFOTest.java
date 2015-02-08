@@ -41,8 +41,8 @@ public class FIFOTest {
 			}
 		}
 		assertEquals(tlb.getChecks(), 20);
-		assertEquals(tlb.getMisses(), 15);
-		assertEquals(tlb.getMissRate(), 75.0, 0.0);
+		assertEquals(tlb.getHits(), 15);
+		assertEquals(tlb.getHitRate(), 75.0, 0.0);
 	}
 
 }

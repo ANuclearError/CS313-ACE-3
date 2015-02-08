@@ -11,7 +11,7 @@ import java.io.RandomAccessFile;
  * memory.
  * 
  * @author Aidan O'Grady
- * @version 1.3
+ * @version 1.4
  * @since 1.1
  *
  */

@@ -19,8 +19,8 @@ import java.util.Scanner;
  * to a physical address, and writing the results of that translation to an 
  * input file.
  * 
- * @author wlb12153
- * @version 1.3
+ * @author Aidan O'Grady
+ * @version 1.4
  * @since 1.1
  *
  */

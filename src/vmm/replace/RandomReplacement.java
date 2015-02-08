@@ -8,7 +8,7 @@ import java.util.Random;
  * this random choice to take place.
  * 
  * @author Aidan O'Grady
- * @version 1.3
+ * @version 1.4
  * @since 0.3
  *
  */

@@ -10,7 +10,7 @@ import vmm.replace.*;
  * it.
  * 
  * @author Aidan O'Grady
- * @version 1.3
+ * @version 1.4
  * @since 0.3
  *
  */
@@ -27,9 +27,9 @@ public class TLB {
 	private int size;
 	
 	/**
-	 * The number of times a miss has occurred.
+	 * The number of times a hit has occurred.
 	 */
-	private int misses;
+	private int hits;
 	
 	/**
 	 * The number of times the TLB is consulted.
@@ -52,7 +52,7 @@ public class TLB {
 		tlb = new int[size][2];
 		this.algo = algo;
 		
-		misses = 0;
+		hits = 0;
 		checks = 0;
 		
 		// Since a page number or frame number of 0 is allowed, we need to
@@ -89,21 +89,12 @@ public class TLB {
 		for(int i=0; i<size; i++){
 			if(tlb[i][0] == pageNum){
 				algo.update(i, checks);
+				hits++;
 				return tlb[i][1];
 			}
 		}
 		// TLB miss has occurred
-		misses++;
 		return -1;
-	}
-	
-	/**
-	 * Returns the miss rate of the TLB
-	 * @return the miss rate
-	 */
-	public float getMissRate(){
-		float missRate = (float)misses/(float)checks * 100;
-		return missRate;
 	}
 	
 	/**
@@ -118,8 +109,17 @@ public class TLB {
 	 * Returns the number of times a miss occurred.
 	 * @return the number of misses
 	 */
-	public int getMisses(){
-		return misses;
+	public int getHits(){
+		return hits;
+	}
+	
+	/**
+	 * Returns the miss rate of the TLB
+	 * @return the miss rate
+	 */
+	public float getHitRate(){
+		float missRate = (float)hits/(float)checks * 100;
+		return missRate;
 	}
 	
 	/**

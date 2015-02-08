@@ -7,13 +7,13 @@ import vmm.manager.TLB;
 import vmm.replace.*;
 
 /**
- * The purpose of the Translator class is to handle the translation from logical
+ * The purpose of the Translator class is to handle the translation from virtual
  * to physical addresses. The translator is responsible for accessing the TLB,
  * Page Table, Physical Memory and Backing store, and is thus the backbone of
  * the whole manager.
  * 
  * @author Aidan O'Grady
- * @version 1.3
+ * @version 1.4
  * @since 1.1
  *
  */
@@ -59,21 +59,19 @@ public class Translator {
 	 */
 	private void setup(){
 		try {
-			String policy = settings.getTLBReplacement().toLowerCase();
-			int tlbSize = settings.getTLBSize(); // Used alot, separate variable.
-			Replacement algo;
-			// Need to determine which policy is desired.
-			if(policy.equalsIgnoreCase("random"))
-				algo = new RandomReplacement(tlbSize);
-			if(policy.equalsIgnoreCase("lru"))
-				algo = new LeastRecentlyUsed(tlbSize);
-			else{ // If the string isn't valid, we resort to FIFO just in case.
-				algo = new FIFO(tlbSize);
-			}
-			tlb = new TLB(tlbSize, algo);
-			pt = new PageTable(settings.getPTSize());
-			pm = new PhysicalMemory(settings.getMemSize(), settings.getFrameSize());
-			bs = new BackingStore("files/BACKING_STORE");
+			String policy = settings.getTLBReplacement();
+			int size = settings.getTLBSize(); // Used alot, separate variable.
+			Replacement algo = getAlgo(policy, size);
+			tlb = new TLB(size, algo);
+			
+			policy = settings.getPageReplacement();
+			size = settings.getPages(); // Used alot, separate variable.
+			algo = getAlgo(policy, size);
+			pt = new PageTable(settings.getPages());
+			pm = new PhysicalMemory(size, 
+					settings.getFrameSize(),
+					algo);
+			bs = new BackingStore(settings.getBackingStore());
 		} catch (NumberFormatException e) {
 			System.out.println("Error: The Settings file must be messed up.");
 			System.exit(0);
@@ -82,10 +80,30 @@ public class Translator {
 	}
 	
 	/**
-	 * Given a logical address, the corresponding physical address will be
+	 * Returns the algorithm retrieved from settings
+	 * 
+	 * @param policy - The policy retrieved from settings
+	 * @param size - the size required for the algorithm
+	 * @return algo
+	 */
+	private Replacement getAlgo(String policy, int size){
+		Replacement algo;
+		// Need to determine which policy is desired.
+		if(policy.equalsIgnoreCase("random"))
+			algo = new RandomReplacement(size);
+		if(policy.equalsIgnoreCase("lru"))
+			algo = new LeastRecentlyUsed(size);
+		else{ // If the string isn't valid, we resort to FIFO just in case.
+			algo = new FIFO(size);
+		}
+		return algo;
+	}
+	
+	/**
+	 * Given a virtual address, the corresponding physical address will be
 	 * obtained.
 	 * 
-	 * @param address - The logical address being translated.
+	 * @param address - The virtual address being translated.
 	 * @return A string combine 
 	 */
 	public String translate(int address){
@@ -153,8 +171,8 @@ public class Translator {
 	public void statistics(){
 		System.out.println("----------");
 		System.out.print("TLB Lookups: " + tlb.getChecks());
-		System.out.print(" | TLB Misses: " + tlb.getMisses());
-		System.out.println(" | TLB Miss Rate: " + tlb.getMissRate());
+		System.out.print(" | TLB Hits: " + tlb.getHits());
+		System.out.println(" | TLB Hit Rate: " + tlb.getHitRate());
 		System.out.println("----------");
 		System.out.print("Page Table Lookups: " + pt.getChecks());
 		System.out.print(" | Page Table Faults: " + pt.getFaults());

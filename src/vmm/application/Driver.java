@@ -4,7 +4,7 @@ package vmm.application;
  * Main method for the application is stored here.
  * 
  * @author Aidan O'Grady
- * @version 1.3
+ * @version 1.4
  * @since 1.3
  *
  */

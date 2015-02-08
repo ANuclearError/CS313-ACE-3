@@ -14,7 +14,7 @@ import java.util.Properties;
  * policy of the TLB
  * 
  * @author Aidan O'Grady
- * @version 1.3
+ * @version 1.4
  * @since 1.3
  *
  */
@@ -64,6 +64,7 @@ public class Settings {
 		properties.setProperty("tlb_size", "16");
 		properties.setProperty("tlb_replacement", "FIFO");
 		properties.setProperty("pt_size", "256");
+		properties.setProperty("page_replacement", "FIFO");
 		properties.setProperty("memory_size", "256");
 		properties.setProperty("frame_size", "256");
 		properties.setProperty("backing_store", "files/BACKING_STORE");
@@ -99,23 +100,23 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns the pt_size property's integer value.
+	 * Returns the pages property's integer value.
 	 * 
-	 * @return pt_size
+	 * @return pages
 	 */
-	public int getPTSize(){
-		String size = properties.getProperty("pt_size");
+	public int getPages(){
+		String size = properties.getProperty("pages");
 		return Integer.parseInt(size);
 	}
 	
 	/**
-	 * Returns the memory_size property's integer value.
+	 * Returns the requested page_replacement value
 	 * 
-	 * @return memory_size
+	 * @return page_replacement
 	 */
-	public int getMemSize(){
-		String size = properties.getProperty("memory_size");
-		return Integer.parseInt(size);
+	public String getPageReplacement(){
+		String policy = properties.getProperty("page_replacement");
+		return policy;
 	}
 	
 	/**

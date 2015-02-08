@@ -41,8 +41,8 @@ public class LRUTest {
 			}
 		}
 		assertEquals(tlb.getChecks(), 20);
-		assertEquals(tlb.getMisses(), 12);
-		assertEquals(tlb.getMissRate(), 60.0, 0.01);
+		assertEquals(tlb.getHits(), 12);
+		assertEquals(tlb.getHitRate(), 60.0, 0.01);
 	}
 
 }

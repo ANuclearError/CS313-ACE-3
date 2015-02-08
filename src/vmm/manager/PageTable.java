@@ -9,7 +9,7 @@ package vmm.manager;
  * strike.
  * 
  * @author Aidan O'Grady
- * @version 1.3
+ * @version 1.4
  * @since 0.2
  *
  */
