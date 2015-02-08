@@ -172,10 +172,10 @@ public class Translator {
 		System.out.println("----------");
 		System.out.print("TLB Lookups: " + tlb.getChecks());
 		System.out.print(" | TLB Hits: " + tlb.getHits());
-		System.out.println(" | TLB Hit Rate: " + tlb.getHitRate());
+		System.out.println(" | TLB Hit Rate: " + tlb.getHitRate() + "%");
 		System.out.println("----------");
 		System.out.print("Page Table Lookups: " + pt.getChecks());
 		System.out.print(" | Page Table Faults: " + pt.getFaults());
-		System.out.println(" | Page Table Fault Rate: " + pt.getFaultRate());
+		System.out.println(" | Page Table Fault Rate: " + pt.getFaultRate() + "%");
 	}
 }
